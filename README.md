@@ -38,6 +38,6 @@ This repository comes with three example event collections:
 
 For details about these collections, please refer to our paper (see bottom).
 
-# Contact & Reference
+# 📧 Contact & Reference
 
 Simon Gottschalk ([gottschalk@L3S.de](mailto:gottschalk@L3S.de)). Please also refer to the [main EventExplorer GitHub repository](https://github.com/saraabdollahi/EventExplorer).
