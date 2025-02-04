@@ -1,0 +1,14 @@
+<div class="box">
+
+    <h2 class="title is-4"><span class="has-tooltip-arrow has-tooltip-success has-tooltip-multiline" data-tooltip="More websites about the event ranked by their relevance.">More Websites</span></h2>
+
+    <div class="columns is-multiline is-mobile">
+
+        {% for document in all_documents %}
+            <div class="column is-one-third">
+                {% include 'document.html' with show_ids=False%}
+            </div>
+        {% endfor %}
+
+    </div>
+</div>

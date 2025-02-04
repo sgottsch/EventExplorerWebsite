@@ -1,0 +1,163 @@
+{% load static bulma_tags %}
+<!DOCTYPE html>
+<html lang="en" class="has-navbar-fixed-top">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EventExplorer - {{title}}</title>
+  {% block css %}
+    {% font_awesome %}
+    <link rel="stylesheet" href="{% static 'bulma/css/style.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bulma/css/bulma-timeline.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bulma/css/bulma-tooltip.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style1.css' %}">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon/apple-touch-icon.png' %} ">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon/favicon-32x32.png' %} ">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon/favicon-16x16.png' %} ">
+    <link rel="manifest" href="{% static 'img/favicon/site.webmanifest' %} ">
+    <link rel="mask-icon" href="{% static 'img/favicon/safari-pinned-tab.svg' %} " color="#485fc7">
+    <meta name="msapplication-TileColor" content="#485fc7">
+    <meta name="theme-color" content="#ffffff">
+
+    {% block extra_css %}{% endblock extra_css %}
+
+  {% endblock css %}
+
+<script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+
+</head>
+<body>
+
+{% block header %}
+  <div class="container">
+    <nav class="navbar is-fixed-top">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/{% if mode == "premio_arquivo_pt" %}{{ mode }}/{% endif %}">
+          <img src="{% static 'img/logo.svg' %}" alt="EventExplorer"
+               width="116" height="34" style="margin-left: 10px;">
+        </a>
+      </div>
+
+
+      <div id="navMenuExample" class="navbar-menu">
+        <div class="navbar-start">
+
+                 {% if showEventCollections %}
+         <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link is-active" href="/{% if mode %}{{ mode }}/{% endif %}">
+              Event Collections
+            </a>
+            <div class="navbar-dropdown ">
+                            {% for mode_id, mode_name in modes.items %}
+              <a class="navbar-item " href="/{{ mode_id }}/">
+                {{ mode_name }}
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+
+        {%  endif %}
+
+
+
+         {% if showEventsList %}
+         <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link is-active" href="/{% if mode %}{{ mode }}/{% endif %}">
+              Events
+            </a>
+            <div class="navbar-dropdown ">
+                            {% for event in events %}
+              <a class="navbar-item " href="/{% if mode %}{{ mode }}/{% endif %}event/{{ event.id }}">
+                {{ event.name_nice }}
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+
+        {%  endif %}
+
+            {% if aspects %}
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <div class="navbar-link" >
+              Aspects
+            </div>
+            <div id="moreDropdown" class="navbar-dropdown ">
+                {% for aspect in aspects %}
+
+                {%  if not aspect.sub_aspects%}
+              <a class="navbar-item " href="/{% if mode %}{{ mode }}/{% endif %}event_aspect/{{ event.id }}/{{ aspect.id }}">
+                {{ aspect.name }}
+              </a>
+                    {% else %}
+                                  <span class="navbar-item ">
+                {{ aspect.name }}
+              </span>
+                              {%  endif %}
+                                                  {% for sub_aspect in aspect.sub_aspects %}
+              <a class="navbar-item " href="/{% if mode %}{{ mode }}/{% endif %}event_aspect/{{ event.id }}/{{ sub_aspect.id }}" style="margin-left: 10px;">
+                {{ sub_aspect.name }}
+              </a>
+              {% endfor %}
+                    {%  if not aspect.is_last %}
+                <hr class="navbar-divider">
+                    {% endif %}
+              {% endfor %}
+
+            </div>
+          </div>
+            {% endif %}
+
+        </div>
+
+
+      </div>
+    </nav>
+  </div>
+{% endblock header %}
+
+{% block hero %}{% endblock hero %}
+
+<section class="section">
+  <div class="container">
+    {% block messages %}
+      {% if messages %}
+        <div class="messages columns is-desktop">
+          <div class="column is-4 is-offset-4">
+            {% for message in messages %}
+              <div class="message {% if message.tags %}is-{{ message.tags|bulma_message_tag }}{% endif %}">
+                <div class="message-body">{{ message }}</div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    {% endblock messages %}
+
+    {% block content_area %}
+      {% block content_title %}{% endblock content_title %}
+      {% block content %}{% endblock content %}
+    {% endblock content_area %}
+  </div>
+</section>
+
+{% block modal %}{% endblock modal %}
+
+{% block footer %}
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>
+            <strong>Event<span style="text-decoration:underline">Explorer</span></strong> | <a href="/contact">Contact</a><!-- by <a href="">ANONYMISED</a> and <a href="">ANONYMISED</a>-->
+        </p>
+      </div>
+    </div>
+  </footer>
+{% endblock footer %}
+
+{% block javascript %}
+  {% block extra_javascript %}{% endblock extra_javascript %}
+{% endblock javascript %}
+</body>
+</html>

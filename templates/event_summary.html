@@ -1,0 +1,36 @@
+{%  if ranking.summary or ranking.metadata %}
+
+<div class="columns is-mobile">
+
+    {%  if ranking.summary %}
+        <div class="column {%  if ranking.metadata %}is-two-thirds{% endif %}">
+            <div class="box">
+                <h2 class="title is-4">Summary</h2>
+
+                <div class="content is-size-7">
+                    {% for entry in ranking.summary.entries %}{{ entry.text }}{% for document in entry.documents %}<button class="button js-modal-trigger is-small is-text reference reference-{{ document.id }}" style="padding: 0; line-height:100%;height:initial;" data-target="{{ document.id }}">[{{ document.id }}]</button>{% endfor %}{% endfor %}</div>
+            </div>
+        </div>
+    {% endif %}
+
+    {%  if ranking.metadata %}
+        <div class="column {%  if ranking.summary %}is-one-third{% endif %}">
+            <div class="box">
+
+                <h2 class="title is-4">Metadata</h2>
+
+                <div class="content is-size-7">
+                <ul>
+                    {% for line in ranking.metadata %}
+                      <li>{{ line }}</li>
+                    {% endfor %}
+                </ul>
+
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+
+{% endif %}

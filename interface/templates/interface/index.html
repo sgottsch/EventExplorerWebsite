@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="box">
+
+ <img src="{% static 'img/logo.svg' %}" alt="EventExplorer"
+            style="margin-bottom: 10px; height: 60px;">
+
+    <p style="max-width: 800px;">EventExplorer is an interactive web system that enables intuitive navigation and exploration of event collections. It is based on retrieval-based augmentation based on a retrieval step guided by an event knowledge graph and BERT-based ranking.</p>
+
+<p>Select one of the event collections below to start!</p>
+<hr>
+
+    <h2 class="title is-4">Event Collections</h2>
+
+    <ul style="list-style-type: square; padding-left: 20px;">
+        {% for mode_id, mode_name in modes.items %}
+            <li><a href="/{{ mode_id }}/">{{ mode_name }}</a></li>
+        {% endfor %}
+    </ul>
+<hr>
+
+    <h2 class="title is-4">More Information</h2>
+
+
+    <ul style="list-style-type: square; padding-left: 20px;">
+        <li><a href="/details">Details</a></li>
+        <li><a href="/resources">Resources</a></li>
+    </ul>
+
+</div>
+
+
+{% endblock %}

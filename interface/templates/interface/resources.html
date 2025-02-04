@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="box">
+    <h2 class="title is-4">Examples of prompts</h2>
+        <ul style="list-style-type: square; padding-left: 20px;">
+            <li><a href="{% static 'files/summary_prompt.txt' %}">Summary generation</a></li>
+            <li><a href="{% static 'files/metadata_prompt.txt' %}">Metadata extraction</a></li>
+            <li><a href="{% static 'files/timeline_prompt.txt' %}">Timeline generation</a></li>
+        </ul>
+
+</div>
+
+
+{% endblock %}

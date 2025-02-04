@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1 class="title">{{ event.name_nice }}</h1>
+
+
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <li><a href="/{% if mode %}{{ mode }}/{% endif %}">WA-RAG</a></li>
+        <li class="is-active"><a href="#" aria-current="page">{{ event.name_nice }}</a></li>
+    </ul>
+</nav>
+
+<div class="box" >
+
+    <h2 class="title is-4"><span class="has-tooltip-arrow has-tooltip-success has-tooltip-multiline" data-tooltip="Click on one of the buttons to get information about the event and its websites regarding the specific aspect.">Aspects</span></h2>
+
+    <nav class="navbar is-link " role="navigation" aria-label="main navigation" id="aspects-bar">
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-center navbar-start">
+
+                {% for aspect in aspects %}
+
+                    {% if not aspect.sub_aspects %}
+
+                        <a class="navbar-item{% if aspect.description %} has-tooltip-arrow has-tooltip-success has-tooltip-multiline{% endif %}" href="/{% if mode %}{{ mode }}/{% endif %}event_aspect/{{ event.id }}/{{ aspect.id }}" style="border-right: 2px solid white;"{% if aspect.description %} data-tooltip="{{ aspect.description }}" {% endif %}>
+                            {{ aspect.name }}
+                        </a>
+
+                    {%  else %}
+
+                        <div class="navbar-item has-dropdown is-hoverable ">
+                            <a class="navbar-link" style="border-right: 2px solid white;">
+                                {{ aspect.name }}
+                            </a>
+
+                            <div class="navbar-dropdown">
+
+                                {% for sub_aspect in aspect.sub_aspects %}
+
+                                    <a class="navbar-item" href="/{% if mode %}{{ mode }}/{% endif %}event_aspect/{{ event.id }}/{{ sub_aspect.id }}">
+                                        {{ sub_aspect.name }}
+                                    </a>
+
+                                {%  endfor %}
+
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {%  endfor %}
+
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+{% include 'event_summary.html' %}
+
+{% include 'event_timeline.html' %}
+
+{% include 'event_documents.html' with all_documents=event.global_ranking.all_ranked_documents %}
+
+{% endblock %}

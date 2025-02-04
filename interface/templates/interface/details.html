@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="box">
+
+    <h2 class="title is-4">About EventExplorer</h2>
+
+    <p style="max-width: 1000px;">EventExplorer is an interactive web system that enables intuitive navigation and exploration of event collections. It is based on retrieval-based augmentation based on a retrieval step guided by an event knowledge graph and BERT-based ranking.</p>
+
+        <hr>
+
+    <figure class="image" style="width: 1000px; margin-bottom:10px;">
+  <img src="{% static 'img/approach.png' %}" />
+</figure>
+
+<p style="max-width: 1000px;">Overview of EventExplorer applied on a web archive. An example event (“Grenfell Tower fire”) and
+two of its aspects (“Result” and “Theresa May”) are shown in green. The generation of three descriptive
+    components for the documents in the first aspect is shown.</p>
+
+
+    <hr>
+    <h3 class="title is-5">Code</h3>
+
+    <p>The EventExplorer retrieval and ranking code are available <a href="https://github.com/saraabdollahi/EventExplorer">here</a>.</p>
+
+</div>
+
+
+{% endblock %}

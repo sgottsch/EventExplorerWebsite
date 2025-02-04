@@ -1,0 +1,25 @@
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Functions to open and close a modal
+    function openModal($document_id) {
+
+        $('.document').removeClass("has-background-primary");
+        $('.timeline-item').removeClass("has-background-primary");
+        $('.reference').removeClass("has-background-primary");
+
+        $('#document-' + $document_id).addClass("has-background-primary");
+        $('.reference-' + $document_id).addClass("has-background-primary");
+    }
+
+  // Add a click event on buttons to open a specific modal
+  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    const modal = $trigger.dataset.target;
+
+    $trigger.addEventListener('click', () => {
+      openModal(modal);
+    });
+  });
+
+});
+</script>

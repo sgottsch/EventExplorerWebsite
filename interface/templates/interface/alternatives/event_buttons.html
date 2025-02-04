@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1 class="title">{{ event.name_nice }}</h1>
+
+
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <li><a href="/static">WA-RAG</a></li>
+        <li class="is-active"><a href="#" aria-current="page">{{ event.name_nice }}</a></li>
+    </ul>
+</nav>
+
+<div class="box" >
+
+    <h2 class="title is-4"><span class="has-tooltip-arrow has-tooltip-success has-tooltip-multiline" data-tooltip="Click on one of the buttons to get information about the event and its websites regarding the specific aspect.">Aspects</span></h2>
+
+    <div class="content is-size-7">
+
+        <div class="buttons are-normal is-centered">
+            {% for aspect in aspects %}
+                <a href="/event_aspect/{{ event.id }}/{{ aspect.id }}" class="button {% if not aspect.sub_aspects %}is-link{%  else %}is-small is-static upper-aspect{%  endif %}{% if aspect.description %} has-tooltip-arrow has-tooltip-success has-tooltip-multiline{% endif %}"{% if aspect.description %} data-tooltip="{{ aspect.description }}" {% endif %}>{{ aspect.name }}</a>
+                {% for sub_aspect in aspect.sub_aspects %}
+                    <a href="/event_aspect/{{ event.id }}/{{ sub_aspect.id }}" class="button  is-link{% if sub_aspect.description %} has-tooltip-arrow has-tooltip-success has-tooltip-multiline{% endif %}"{% if sub_aspect.description %} data-tooltip="{{ sub_aspect.description }}" {% endif %}>{{ sub_aspect.name }}</a>
+                {%  endfor %}
+
+            {%  endfor %}
+        </div>
+
+    </div>
+</div>
+
+{% include 'event_summary.html' %}
+
+{% include 'event_timeline.html' %}
+
+{% include 'event_documents.html' %}
+
+{% endblock %}

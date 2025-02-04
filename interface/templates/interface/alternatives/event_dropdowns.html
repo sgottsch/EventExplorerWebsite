@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1 class="title">{{ event.name_nice }}</h1>
+
+
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <li><a href="/static">WA-RAG</a></li>
+        <li class="is-active"><a href="#" aria-current="page">{{ event.name_nice }}</a></li>
+    </ul>
+</nav>
+
+<div class="box" >
+
+    <h2 class="title is-4"><span class="has-tooltip-arrow has-tooltip-success has-tooltip-multiline" data-tooltip="Click on one of the buttons to get information about the event and its websites regarding the specific aspect.">Aspects</span></h2>
+
+    <div class="content is-size-7">
+
+        <div class="columns is-multiline">
+            {% for aspect in aspects %}
+                <div class="column">
+
+                    {% if not aspect.sub_aspects %}
+                        <a href="/event_aspect/{{ event.id }}/{{ aspect.id }}"><button class="button is-link{% if aspect.description %} has-tooltip-arrow has-tooltip-success has-tooltip-multiline{% endif %}"{% if aspect.description %} data-tooltip="{{ aspect.description }}" {% endif %}>{{ aspect.name }}</button></a>
+
+                    {%  else %}
+                        <div class="dropdown aspect-dropdown">
+                            <div class="dropdown-trigger">
+                                <a href="/event_aspect/{{ event.id }}/{{ aspect.id }}">
+                                    <button class="button is-link{% if aspect.description %} has-tooltip-arrow has-tooltip-success has-tooltip-multiline{% endif %}"{% if aspect.description %} data-tooltip="{{ aspect.description }}" {% endif %} aria-haspopup="true" aria-controls="dropdown-menu">
+                                        <span>{{ aspect.name }}</span>
+                                        <span class="icon is-small">
+                                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                        </span>
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                                <div class="dropdown-content">
+                                    {% for sub_aspect in aspect.sub_aspects %}
+                                        <a href="/event_aspect/{{ event.id }}/{{ sub_aspect.id }}" class="dropdown-item">
+                                            {{ sub_aspect.name }}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".aspect-dropdown").hover(function() {
+    $(this).toggleClass("is-active")} );
+</script>
+
+{% include 'event_summary.html' %}
+
+{% include 'event_timeline.html' %}
+
+{% include 'event_documents.html' %}
+
+{% endblock %}

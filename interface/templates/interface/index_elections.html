@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+
+
+{% block extra_css %}
+		 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+{% endblock %}
+
+
+{% load static %}
+
+{% block content %}
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+    	<style>
+		#map {
+            padding:0px;
+            margin:0px;
+            height:600px;
+            width:100%;
+		}
+		#map {
+            border: 2px solid black;
+		}
+		#country {
+            width: 100%;
+            height: 200px;
+            border-bottom: 0px solid black;
+            border-left: 0px solid black;
+            border-right: 0px solid black;
+            padding: 10px;
+		}
+
+        #country-name {
+            font-weight: bold;
+        }
+
+        ul, li {
+            margin-left: 10px;
+            list-style-type: circle;
+        }
+	</style>
+
+
+<div class="box" onload="init()">
+    <h2 class="title is-4">Elections in Europe</h2>
+
+		<div id="map"></div>
+		<div id="country">
+		<h2 id="country-name"></h2>
+		<ul id="country-elections">
+		</ul>
+		</div>
+</div>
+	<script>
+			var baseLayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',{attribution: 'Tiles &copy; CartoDB'});
+			var map = L.map("map",{layers: [baseLayer], center: [53, 9.54], zoom: 4});
+
+
+
+countries = {{ countries|safe }};
+
+elections = {{ elections|safe }};
+
+event_ids = {{ event_names_to_id|safe }};
+
+var myStyleUnclicked = {
+    "color": "#485FC7",
+    "weight": 3,
+    "opacity": 0.65
+};
+var myStyleClicked = {
+    "color": "#FF6685",
+    "weight": 3,
+    "opacity": 0.65
+};
+
+function onEachFeature(feature, layer) {
+    //bind click
+    layer.on('click', function (e) {
+
+      if (typeof lastClickedLayer !== 'undefined') {
+      lastClickedLayer.setStyle(myStyleUnclicked);
+        }
+
+      e.target.setStyle(myStyleClicked);
+      lastClickedLayer = e.target;
+	  document.getElementById("country-name").innerHTML="Elections in " + e.target.feature.properties.name;
+	  var elections_list=""
+	  for(var i=0;i<elections[e.target.feature.id].length;i++) {
+		elections_list+="<li><a href='/{{ mode }}/event/" + event_ids[elections[e.target.feature.id][i]] +"'>" + elections[e.target.feature.id][i] + "</li></a>"
+	  }
+	  document.getElementById("country-elections").innerHTML=elections_list;
+    });
+}
+
+
+
+L.geoJSON(countries, {
+    onEachFeature: onEachFeature,
+    style: myStyleUnclicked}
+).addTo(map);
+
+
+
+	</script>
+
+
+{% endblock %}

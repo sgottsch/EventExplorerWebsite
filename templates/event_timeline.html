@@ -1,0 +1,81 @@
+{%  if timeline %}
+<div class="columns is-multiline is-mobile">
+
+    <div class="column is-one-third ">
+
+
+        <div class="box">
+
+            <h2 class="title is-4"><span class="has-tooltip-arrow has-tooltip-success has-tooltip-multiline" data-tooltip="A timeline of most relevant happenings reported in the websites about this event and aspects. Click on one entry of the timeline to see which documents are related to that entry.">Timeline</span></h2>
+
+            <div class="timeline">
+                <header class="timeline-header">
+                <span class="tag is-medium ">Start</span>
+                </header>
+
+                {% for entry in timeline.entries %}
+                    <a class="timeline-item" id="timeline-{{ entry.id }}" style="padding-bottom: 3px;">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <p class="heading">{{ entry.date }}</p>
+                            <p>
+                                {{  entry.text }}
+                                {% for document in entry.documents %}
+                                    <button class="button js-modal-trigger is-small is-text reference reference-{{ document.id }}" style="padding: 0; line-height:100%;height:initial;" data-target="{{ document.id }}">[{{ document.id }}]</button>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </a>
+                {% endfor %}
+
+                <div class="timeline-header">
+                    <span class="tag is-medium ">End</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="column is-two-thirds">
+        <div class="box">
+
+            <h2 class="title is-4"><span class="has-tooltip-arrow has-tooltip-success has-tooltip-multiline" data-tooltip="Websites most relevant to the event and aspects ordered by their relevance. These websites are referred to in the summary, metadata and timeline.">Top Websites</span></h2>
+            <div class="columns is-multiline is-mobile">
+
+                {% for document in ranking.top_ranked_documents %}
+                    <div class="column is-one-third">
+                        {% include 'document.html'  with show_ids=True%}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{%  endif %}
+
+{% include 'event_references.html' %}
+
+{%  if timeline %}
+
+<script>
+    {% for entry in timeline.entries %}
+        $('#timeline-{{ entry.id }}').click(function(e) {
+
+        if ($(e.target).hasClass("button")) {
+            return;
+        }
+
+        $('.document').removeClass("has-background-primary");
+        $('.timeline-item').removeClass("has-background-primary");
+        $('.reference').removeClass("has-background-primary");
+
+        $('#timeline-{{ entry.id }}').addClass("has-background-primary");
+
+        {% for document in entry.documents %}
+        $('#document-{{ document.id }}').addClass("has-background-primary");
+                       {%  endfor %}
+        ; });
+    {%  endfor %}
+</script>
+
+{%  endif %}

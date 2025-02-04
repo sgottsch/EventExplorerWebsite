@@ -1,0 +1,35 @@
+<article class="card document" id="document-{{ document.id }}">
+
+    <header class="card-header">
+        <p class="card-header-title is-size-7 document-header" style="padding-top: 2px; padding-bottom: 2px;">
+            {%  if show_ids %}[{{document.id}}] {% endif %}{{ document.title }}
+        </p>
+    </header>
+
+    <div class="content is-size-7" style="padding-left:8px; padding-right: 8px; margin-bottom: 5px;">
+        {{ document.snippet | safe}}
+    </div>
+    <footer class="card-footer is-size-7" style="padding-left: 8px;">
+        {{ document.domain}}
+    </footer>
+    <footer class="card-footer is-size-7">
+        <p class="card-footer-item" style="padding: 0">
+            <time>
+                {{ document.date }}
+            </time>
+        </p>
+        <p class="card-footer-item" style="padding: 0">
+            <span>
+                <a href=" {{ document.live_url }}" target="_blank">Live Web</a>
+            </span>
+        </p>
+        {%  if document.archive_url %}
+        <p class="card-footer-item" style="padding: 0">
+            <span>
+                <a href="{{ document.archive_url }}" target="_blank">Archive</a>
+            </span>
+        </p>
+        {%  endif %}
+    </footer>
+
+</article>
